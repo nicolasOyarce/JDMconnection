@@ -1,0 +1,48 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<!-- Header-->
+<header class="bg-dark py-5" >
+    <div class="container px-4 px-lg-5 my-5" >
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder" style="padding-top: 50px;">JDM Connection <img src="https://www.muraldecal.com/en/img/asfs251-png/folder/products-detalle-png/stickers-japan-jdm-rising-sun-badge.png" alt="logo" height="55px" width="55px"></h1>
+            <p class="lead fw-normal text-white-50 mb-0">Tienda especializada en autos Japoneses</p>
+        </div>
+    </div>
+</header>
+
+<!-- Section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+            {% for car in cars%}
+                <div class="col mb-5">
+                    <div class="card h-100">
+
+                        <!-- Product image - Nissan Skyline -->
+                        <img class="card-img-top" src="{{car.image_url}}" alt="{{car.model}}" />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">{{car.brand}} {{car.model}}</h5>
+                                <!-- Product price-->
+                                ${{car.price}}
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Ver producto</a></div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
