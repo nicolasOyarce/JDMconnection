@@ -1,4 +1,5 @@
 # JDMconnection
+Project of an ecommerce realized for the backend course on jdm cars
 ## Prerequisites
   - Python
   - Git
