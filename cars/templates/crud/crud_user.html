@@ -164,13 +164,13 @@ $(document).ready(function(){
 {% endblock content_crud %}
 
 {% block content %}
-<div class="container-xl">
+<div class="container-xl" style="margin-top: 90px;">
     <div class="table-responsive" style="border-radius: 18px 19px 19px 19px;-webkit-border-radius: 18px 19px 19px 19px;-moz-border-radius: 18px 19px 19px 19px;opacity: 0.85;">
         <div class="table-wrapper">			
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-8">
-                        <h2>JDMConnection - <b>Lista Automoviles</b></h2>
+                        <h2>JDMConnection - <b>Lista Usuarios</b></h2>
                     </div>
                     <div class="col-sm-4" style="text-align: right;">
                         <button type="button" class="btn btn-info add-new">
@@ -195,9 +195,9 @@ $(document).ready(function(){
                         
                        <tr>
                             <td>{{user.id}}</td>
-                            <td>{{user.name}}</td>
+                            <td>{{user.username}}</td>
                             <td>{{user.password}}</td>
-                            <td>{{user.name}}</td>
+                            <td>{{user.is_superuser}}</td>
                             <td>
                                 <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                                 <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
@@ -209,6 +209,7 @@ $(document).ready(function(){
                 </tbody>
             </table>
         </div>
+       
     </div>        
 </div>   
 {% endblock content %}

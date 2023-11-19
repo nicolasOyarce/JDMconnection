@@ -196,6 +196,13 @@ def crud_cars(request):
 def crud_user(request):
 
     users = User.objects.all()
+
+    test = User.objects.get(username='admin')
+    permissions_user = test.user_permissions.all()
+
+
+
     return render(request, "crud/crud_user.html", {
-        'users': users
+        'users': users,
+        'aaa': permissions_user
     })
