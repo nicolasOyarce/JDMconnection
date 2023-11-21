@@ -22,6 +22,11 @@ class Cars(models.Model):
     def __str__(self):
         return self.brand + ' ' + self.model + ' ' + self.age
 
+    class Meta:
+
+        db_table = 'cars'
+        ordering = ['id']
+
 
 class Sale(models.Model):
 
@@ -30,7 +35,7 @@ class Sale(models.Model):
     register  = models.DateTimeField(auto_now_add=True)
 
 
-    def __init__(self):
+    def __str__(self):
         return self.folio
     
     @property

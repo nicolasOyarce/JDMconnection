@@ -30,7 +30,7 @@
                     <p><span class="text-muted">Precio: </span></p>
                   </div>
                   <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-
+                
                     <button class="btn btn-link px-2"
                       onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
                       <a href="{% url 'shopping_cart_decrement' value.car_id %}" class="btn btn-sm"><i class="fas fa-minus"></i></a>
@@ -65,21 +65,21 @@
         {% endif %}
           
         <div style="text-align: right;">
-          <h4>Subtotal:</h4>
+          <h4>Total:</h4>
           <h1>${{total_cart_value}}</h1>
         </div>
 
         {% if user.is_authenticated and request.session.cart.items %}
-        <div class="card">
-          <div class="card-">
-            <a href="{% url 'process_sale' %}" class="btn btn-warning btn-block btn-lg">Proceder al Pago</a>
-          </div>
-        </div>
+              <div class="card">
+                <div class="card-">
+                  <a href="{% url 'shopping_cart_clear' %}" class="btn btn-warning btn-block btn-lg">Proceder al Pago</a>
+                </div>
+              </div>
         {% endif %}
 
         <div class="row mt-4 d-flex align-items-center">
             <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
-                <a href="{% url 'products' %}">
+                <a href="{% url 'process_sale' %}">
                     <i class="fas fa-arrow-left mr-2"></i> Continuar Comprando</a>
             </div>
         </div>

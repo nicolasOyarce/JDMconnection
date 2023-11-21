@@ -224,13 +224,6 @@ def shopping_cart_clear(request):
     return redirect('shopping_cart')
 
 
-
-
-
-
-
-
-
 # Cruds
 @login_required
 def crud_cars(request):
@@ -245,14 +238,8 @@ def crud_user(request):
 
     users = User.objects.all()
 
-    test = User.objects.get(username='admin')
-    permissions_user = test.user_permissions.all()
-
-
-
     return render(request, "crud/crud_user.html", {
         'users': users,
-        'aaa': permissions_user
     })
 
 
@@ -263,6 +250,8 @@ def process_sale(request):
     order = Sale.objects.create(user = request.user)
     cart = ShoppingCart(request)
     items_cart = list()
+
+    cart.clear()
 
     for key, value in cart.cart.items():
         items_cart.append(SalesDetail(
