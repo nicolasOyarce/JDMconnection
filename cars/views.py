@@ -4,9 +4,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .forms import CarsForm
-from .models import Cars
+from .models import Cars, Sale, SalesDetail
 from django.contrib.auth.decorators import login_required
-
+from .cart import ShoppingCart
+from django.contrib import messages
 # Create your views here.
 
 # View in charge of displaying the index data
@@ -177,13 +178,63 @@ def about(request):
     return render(request, "about.html")
 
 
-def shopping_cart(request):
 
-    cars = Cars.objects.all()
-    return render(request, "buy/shopping_cart.html", {
-        'cars': cars
+# SHOPPING CART
+## View
+def shopping_cart(request):
+    all_cars = Cars.objects.all()
+    return render(request, 'buy/shopping_cart.html', {
+        "all_cars": all_cars
     })
 
+## Add
+def shopping_cart_add(request, car_id):
+
+    cart = ShoppingCart(request)
+    product = Cars.objects.get(id=car_id)
+    
+    cart.add(product=product)
+
+    return redirect('shopping_cart')
+    
+## Remove
+def shopping_cart_remove(request, car_id):
+
+    cart = ShoppingCart(request)
+    product = Cars.objects.get(id=car_id)
+    
+    cart.remove(product=product)
+
+    return redirect('shopping_cart')
+
+## Decrement 
+def shopping_cart_decrement(request, car_id):
+
+    cart = ShoppingCart(request)
+    product = Cars.objects.get(id=car_id)
+    
+    cart.decrement(product=product)
+
+    return redirect('shopping_cart')
+
+## Clear 
+def shopping_cart_clear(request):
+
+    cart = ShoppingCart(request)
+    
+    cart.clear()
+
+    return redirect('shopping_cart')
+
+
+
+
+
+
+
+
+
+# Cruds
 @login_required
 def crud_cars(request):
 
@@ -206,3 +257,27 @@ def crud_user(request):
         'users': users,
         'aaa': permissions_user
     })
+
+
+#
+@login_required
+def process_sale(request):
+    
+    order = Sale.objects.create(user = request.user)
+    cart = ShoppingCart(request)
+    items_cart = list()
+
+    for key, value in cart.cart.items():
+        items_cart.append(SalesDetail(
+
+            product_id = key,
+            quantity = value["quantity"],
+            user = request.user,
+            order = order
+        ))
+
+    SalesDetail.objects.bulk_create(items_cart)
+
+    messages.success(request, "El pedido se ha creado correctamente")
+
+    return redirect('index')

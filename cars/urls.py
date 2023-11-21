@@ -15,6 +15,11 @@ urlpatterns = [
     path('shoppingCart/', views.shopping_cart, name='shopping_cart'),
     path('crudCars/', views.crud_cars, name='crud_cars'),
     path('crudUser/', views.crud_user, name='crud_user'),
+    path('add/<int:car_id>/', views.shopping_cart_add, name='shopping_cart_add'),
+    path('remove/<int:car_id>/', views.shopping_cart_remove, name='shopping_cart_remove'),
+    path('decrement/<int:car_id>/', views.shopping_cart_decrement, name='shopping_cart_decrement'),
+    path('clear/', views.shopping_cart_clear, name='shopping_cart_clear'),
+    path('', views.process_sale, name='process_sale')
 ]
 
 

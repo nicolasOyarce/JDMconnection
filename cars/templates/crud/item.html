@@ -2,25 +2,26 @@
 
 {% block content %}
 
-
 <!-- MAIN PRODUCT -->
 <section class="py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
+
             <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{car.image.url}}" alt="{{car.model}}" /></div>
             <div class="col-md-6">
+                <div class="small mb-1">ID: {{car.id}}</div>
                 <div class="small mb-1">{{car.patente}}</div>
                 <h1 class="display-5 fw-bolder">{{car.brand}} {{car.model}}</h1>
-                <div class="fs-5 mb-5">
-                    <span>${{car.price}}</span>
+                <span>Stock: {{car.stock}}</span>
+                <div style="margin: 10px 0 30px 0;">
+                    <h3>${{car.price}}</h3>
                 </div>
                 <p class="lead">{{car.description}}
                 </p><br>
                 <div class="d-flex">
-                    <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                    <button class="btn btn-outline-dark flex-shrink-0" type="button">
-                        <i class="bi-cart-fill me-1"></i>
-                        Add to cart
+                  <input id="form1" min="0" name="quantity" value="1" type="number" class="text-center me-3" />
+                    <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                        <a href="{% url 'shopping_cart_add' car.id %}" class="bi-cart-fill me-1" style="text-decoration: none;">Agregar al carrito</a>
                     </button>
                 </div>
             </div>

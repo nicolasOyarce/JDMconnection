@@ -1,4 +1,4 @@
-class Cart:
+class ShoppingCart:
 
     def __init__(self, request):
 
@@ -11,47 +11,52 @@ class Cart:
         self.cart = cart
 
 
-        def add(self, product):
-            if str(product.id) not in self.cart.key():
-                self.cart[product.id] = {
-                    "product_id": product.id,
-                    "name": product.name,
-                    "quantity": 1,
-                    "price": product.price,
-                    "image": product.image.url,
-                }
-            else:
-                for key, value in self.cart.items():
-                    if key == str(product.id):
-                        value["quantity"] = value["quantity"] + 1
-                        break
-
-            self.save()
-
-        
-        def save(self):
-            self.session["cart"] = self.cart
-            self.session.modified = True
-
-
-        def remove(self, product):
-            product_id = str(product_id)
-            if product_id in self.cart:
-                del self.cart[product_id]
-                self.save()
-
-
-        def decremet(self, product):
+    def add(self, product):
+        if str(product.id) not in self.cart.keys():
+            self.cart[product.id] = {
+                "car_id": product.id,
+                "brand": product.brand,
+                "stock": product.stock,
+                "quantity": 1,
+                "age": product.age,
+                "price": str(product.price),
+                "image": product.image.url,
+            }
+        else:
             for key, value in self.cart.items():
                 if key == str(product.id):
-                    value["quantity"]= value["quantity"] - 1
-                    if value["quantity"] < 1:
-                        self.remove(product)
-                    self.save()
+                    value["quantity"] = value["quantity"] + 1
+                    value["price"] = float(value["price"]) + product.price
+                    break
 
-                else:
-                    print("El producto no existe en el carrito")
+        self.save()
 
-        def clear(self):
-            self.session["cart"] = {}
-            self.session.modified = True
+        
+    def save(self):
+        self.session["cart"] = self.cart
+        self.session.modified = True
+
+
+    def remove(self, product):
+        product.id = str(product.id)
+        if product.id in self.cart:
+            del self.cart[product.id]
+            self.save()
+
+
+    def decrement(self, product):
+        product_id = str(product.id)
+        if product_id in self.cart:
+            value = self.cart[product_id]
+            value["quantity"] = value["quantity"] - 1
+            value["price"] = float(value["price"]) - product.price
+            if value["quantity"] < 1:
+                self.remove(product)
+            self.save()
+        else:
+            print("El producto no existe en el carrito")
+
+
+    def clear(self):
+        self.session["cart"] = {}
+        self.session.modified = True

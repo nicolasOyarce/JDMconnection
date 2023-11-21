@@ -12,7 +12,7 @@
                 <div class="card h-100">
                     <!-- Product image-->
                     {% if car.image %}
-                    <a href="{% url 'item' car.id %}"><img class="card-img-top" width="35 0px" height="250px" src="{{car.image.url}}" alt="{{car.model}}" /></a>
+                    <a href="{% url 'item' car.id %}"><img class="card-img-top" loading="lazy" width="35 0px" height="250px" src="{{car.image.url}}" alt="{{car.model}}" /></a>
                     {% endif %}
                     <!-- Product details-->
                     <div class="card-body p-4">
@@ -33,7 +33,7 @@
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark " href="">Ver mas</a></div>  
+                        <div class="text-center"><a class="btn btn-outline-dark " href="{% url 'item' car.id %}">Ver mas</a></div>  
                     </div>
                 </div>
             </div>
