@@ -1,0 +1,111 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<section class="intro">
+    <div
+      class="bg-image-vertical h-100"
+      style="
+        background-color: #212529;
+      "
+    >
+      <div class="mask d-flex align-items-center h-100">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+              <div class="card" style="border-radius: 1rem; background-color: #979797; margin-top: 100px;" >
+                <div class="card-body p-5"style="margin: 55px 0; background-color: #979797">
+                  <h1 class="mb-5 text-center">Ingresar Libro</h1>
+                  {% load widget_tweaks %}
+                  
+                  <form method="post" enctype="multipart/form-data">
+                    <!-- 2 column grid layout with text inputs for the first and last names -->
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-12 col-md-6 mb-4">
+                        <div class="form-outline form-white mb-4">
+                            {% render_field form.brand class="form-control form-control-lg" %}
+                            <label class="form-label" for="{{ form.brand.id_for_label }}" style="display: block; margin-top: 5px;">Brand</label>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 mb-4">
+                        <div class="form-outline form-white mb-4">
+                            {% render_field form.model class="form-control form-control-lg" %}
+                            <label class="form-label" for="{{ form.model.id_for_label }}" style="display: block; margin-top: 5px;">Model</label>
+                        </div>
+                      </div>
+                    </div>
+                  <div class="row">
+                      <div class="col-12 col-md-6 mb-4">
+                        <div class="form-outline form-white mb-4">
+                            {% render_field form.age class="form-control form-control-lg" %}
+                            <label class="form-label" for="{{ form.age.id_for_label }}" style="display: block; margin-top: 5px;">Age</label>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 mb-4">
+                        <div class="form-outline form-white mb-4">
+                            {% render_field form.color class="form-control form-control-lg" %}
+                            <label class="form-label" for="{{ form.color.id_for_label }}" style="display: block; margin-top: 5px;">Color</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 col-md-6 mb-4">
+                        <div class="form-outline form-white mb-4">
+                            {% render_field form.type_car class="form-control form-control-lg" %}
+                            <label class="form-label" for="{{ form.type_car.id_for_label }}" style="display: block; margin-top: 5px;">Tipo De Auto</label>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 mb-4">
+                        <div class="form-outline form-white mb-4">
+                            {% render_field form.price class="form-control form-control-lg" %}
+                            <label class="form-label" for="{{ form.price.id_for_label }}" style="display: block; margin-top: 5px;">Precio</label>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Text input -->
+                    <div class="form-outline form-white mb-4">
+                        <label>Imagen</label>
+                        <input type="file" name="txtImagen" id="txtImagen">
+                    </div>
+                    
+  
+                    <!-- Text input -->
+                    <div class="form-outline mb-4">
+                      {% render_field form.description class="form-control" %}
+                      <label class="form-label" for="form6Example4"
+                        >Descripcion</label
+                      >
+                    </div>
+  
+                    <!-- Checkbox -->
+                    <div class="form-check d-flex justify-content-center mb-4">
+                      <input
+                        class="form-check-input me-2"
+                        type="checkbox"
+                        value=""
+                        id="form6Example8"
+                        checked
+                      />
+                      <label class="form-check-label" for="form6Example8">
+                        Usado
+                      </label>
+                    </div>
+  
+                    <!-- Submit button -->
+                    <button
+                      type="submit"
+                      class="btn btn-secondary btn-rounded btn-block"
+                    >
+                      Ingresar Auto
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

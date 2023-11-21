@@ -93,27 +93,23 @@ def signup(request):
 
 #
 def register_car(request):
-
     if request.method == 'GET':
-
-        return render(request, "crud/register_car.html", {
-            'form': CarsForm
-        })
+        return render(request, "crud/register_car.html", {'form': CarsForm})
 
     else:
-
         try:
-            form = CarsForm(request.POST)
-            new_car = form.save(commit=False)
-            new_car.save()
-
-            return redirect('products')
-
-        except:
-            return render(request, 'crud/register_car.html', {
-                'form': CarsForm,
-                'error': 'Ingresa datos validos'
-            })
+            form = CarsForm(request.POST, request.FILES)
+            if form.is_valid():
+                new_car = form.save(commit=False)
+                new_car.image = request.FILES.get('txtImagen')
+                new_car.save()
+                return redirect('products')
+            else:
+                # Handle form validation errors
+                return render(request, 'crud/register_car.html', {'form': form, 'error': 'Ingresa datos válidos'})
+        except Exception as e:
+            # Handle other exceptions
+            return render(request, 'crud/register_car.html', {'form': CarsForm, 'error': 'Error: {}'.format(str(e))})
 
 
 def item(request, car_id):
@@ -156,15 +152,30 @@ def update(request, car_id):
 
 
 @login_required
-def delete(request, car_id):
+def delete_car(request, car_id):
+    car = get_object_or_404(Cars, id=car_id)
+    car.delete()
+    return redirect('crud_cars')  # Cambia 'products' con la URL a la que deseas redirigir después de eliminar
 
-    car = get_object_or_404(Cars, pk = car_id)
-
+def update_car(request, car_id):
+    car = get_object_or_404(Cars, id=car_id)
+    
     if request.method == 'POST':
-        car.delete()
+        form = CarsForm(request.POST, request.FILES, instance=car)
+        
+        if form.is_valid():
 
-        return redirect('mod_car')
+            car.image.delete(save=False)
+            car = form.save(commit=False)
+            car.image = request.FILES.get('txtImagen')
+            form.save()
+            return redirect('products')
 
+
+    else:
+        form = CarsForm(instance=car)
+
+    return render(request, 'crud/update_car.html', {'form': form})
 
 def products(request):
 
