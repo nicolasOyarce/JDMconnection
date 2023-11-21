@@ -182,10 +182,7 @@ def about(request):
 # SHOPPING CART
 ## View
 def shopping_cart(request):
-    all_cars = Cars.objects.all()
-    return render(request, 'buy/shopping_cart.html', {
-        "all_cars": all_cars
-    })
+    return render(request, 'buy/shopping_cart.html')
 
 ## Add
 def shopping_cart_add(request, car_id):

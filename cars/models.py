@@ -15,7 +15,7 @@ class Cars(models.Model):
     age         = models.CharField(max_length=4)
     used        = models.BooleanField(default=True)
     stock       = models.IntegerField(default=1, null=False)
-    price       = models.FloatField()
+    price       = models.IntegerField()
     register    = models.DateTimeField(auto_now_add=True)
     image       = models.ImageField(upload_to="cars_img", null=True)
 
