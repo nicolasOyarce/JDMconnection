@@ -11,11 +11,16 @@ class ShoppingCart:
         self.cart = cart
 
 
+    
+
     def add(self, product):
-        if str(product.id) not in self.cart.keys():
-            self.cart[product.id] = {
+        product_id = str(product.id)
+
+        if product_id not in self.cart.keys():
+            self.cart[product_id] = {
                 "car_id": product.id,
                 "brand": product.brand,
+                "model": product.model,
                 "stock": product.stock,
                 "quantity": 1,
                 "age": product.age,
@@ -24,12 +29,16 @@ class ShoppingCart:
             }
         else:
             for key, value in self.cart.items():
-                if key == str(product.id):
+                if key == product_id:
+                    if value["quantity"] + 1 > product.stock:
+                        return  
+
                     value["quantity"] = value["quantity"] + 1
-                    value["price"] = float(value["price"]) + product.price
+                    value["price"] = int(value["price"]) + product.price
                     break
 
         self.save()
+
 
         
     def save(self):
@@ -49,7 +58,7 @@ class ShoppingCart:
         if product_id in self.cart:
             value = self.cart[product_id]
             value["quantity"] = value["quantity"] - 1
-            value["price"] = float(value["price"]) - product.price
+            value["price"] = int(value["price"]) - product.price
             if value["quantity"] < 1:
                 self.remove(product)
             self.save()
