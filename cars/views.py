@@ -13,7 +13,7 @@ from django.contrib import messages
 # View in charge of displaying the index data
 def index(request):
 
-    cars = Cars.objects.all()
+    cars = Cars.objects.filter(in_stock=True)
     cars_index = cars[:8]
 
     return render(request, "index.html", {
@@ -179,7 +179,7 @@ def update_car(request, car_id):
 
 def products(request):
 
-    cars = Cars.objects.all()
+    cars = Cars.objects.filter(in_stock=True)
     return render(request, "crud/products.html", {
         'cars': cars
     })
@@ -200,12 +200,11 @@ def shopping_cart_add(request, car_id):
 
     cart = ShoppingCart(request)
     product = Cars.objects.get(id=car_id)
-    quantity = int(request.POST.get('quantity', 1))  # Get the quantity from the form
+    quantity = int(request.POST.get('quantity', 1))  
     
-    result = cart.add(product=product, quantity=quantity)  # Pass the quantity to the add function
+    result = cart.add(product=product, quantity=quantity)  
 
     if result == "Estás superando el stock disponible":
-        messages.error(request, result)
         return redirect('item', car_id=car_id)
 
     return redirect('shopping_cart')
@@ -259,31 +258,38 @@ def crud_user(request):
     })
 
 
-#
 @login_required
 def process_sale(request):
-    
     order = Sale.objects.create(user=request.user)
     cart = ShoppingCart(request)
-    items_cart = list()
+    items_cart = []
+
+    total_price = 0
 
     for key, value in cart.cart.items():
         product = Cars.objects.get(id=key)
+        
         if product.stock < value["quantity"]:
-            messages.error(request, f"No hay suficiente stock para {product.brand} {product.model}")
             return redirect('shopping_cart')
+        
         product.stock -= value["quantity"]
         product.save()
-        items_cart.append(SalesDetail(
-            product_id = key,
-            quantity = value["quantity"],
-            user = request.user,
-            order = order
-        ))
+
+        item = SalesDetail(
+            sale=order,
+            product=product,
+            quantity=value["quantity"],
+            price=value["price"], 
+        )
+        items_cart.append(item)
+
+        total_price += product.price * value["quantity"]
 
     SalesDetail.objects.bulk_create(items_cart)
 
-    messages.success(request, "El pedido se ha creado correctamente")
+    order.total_price = total_price
+    order.save()
+
     cart.clear()
 
     return redirect('index')

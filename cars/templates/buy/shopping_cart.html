@@ -9,6 +9,8 @@
 
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h3 class="fw-normal mb-0 text-black">Carrito de compras</h3>
+
+          {% load humanize %}
           <form action="{% url 'shopping_cart_clear' %}" class="card-">
             <button type="submit" class="btn btn-info btn-block btn-lg text-white" style="text-align: right;"><a href="{% url 'shopping_cart_clear' %}" style="text-decoration: none;">Limpiar carrito</a></button>
           </form>
@@ -27,7 +29,7 @@
                   <div class="col-md-3 col-lg-3 col-xl-3">
                     <p class="lead fw-normal mb-2">{{value.brand}} {{value.model}}</p>
                     <p><span class="text-muted">Stock: </span>{{value.stock}}</p>
-                    <p><span class="text-muted">Precio: </span></p>
+                    <p><span class="text-muted">Precio: {{value.original_price}}</span></p>
                   </div>
                   <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                 
@@ -46,7 +48,7 @@
 
                   </div>
                   <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                    <h5 class="mb-0">${{value.price}}</h5>
+                    <h5 class="mb-0">${{value.price|intcomma}}</h5>
                     <h6>{{ value.count }}</h6>
                   </div>
                   <div class="col-md-1 col-lg-1 col-xl-1 text-end">
@@ -66,20 +68,24 @@
           
         <div style="text-align: right;">
           <h4>Total:</h4>
-          <h1>${{total_cart_value}}</h1>
+          <h1>${{total_cart_value|intcomma}}</h1>
         </div>
 
-        {% if user.is_authenticated and request.session.cart.items %}
-              <div class="card">
-                <div class="card-">
-                  <a href="{% url 'process_sale' %}" class="btn btn-warning btn-block btn-lg">Proceder al Pago</a>
-                </div>
-              </div>
+        {% if user.is_authenticated %}
+
+          <div class="card">
+            <div class="card-body">
+              <a href="{% url 'process_sale' %}" class="btn btn-primary btn-block">
+                Procesar Venta
+              </a>
+            </div>
+          </div>
+
         {% endif %}
 
         <div class="row mt-4 d-flex align-items-center">
             <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
-                <a href="{% url 'process_sale' %}">
+                <a href="{% url 'products' %}">
                     <i class="fas fa-arrow-left mr-2"></i> Continuar Comprando</a>
             </div>
         </div>

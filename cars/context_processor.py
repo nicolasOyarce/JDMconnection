@@ -7,6 +7,6 @@ def total_cart_value(request):
     for key, value in cart.items():
         price = int(value.get("price", 0))
         quantity = int(value.get("quantity", 0))
-        total_value += price + quantity
+        total_value += price 
 
     return {'total_cart_value': total_value}

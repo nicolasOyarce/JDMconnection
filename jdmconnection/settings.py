@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'widget_tweaks',
     'cars',
+
 ]
 
 MIDDLEWARE = [
@@ -83,8 +84,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'jdmconnection',
-        'USER': 'alekplay',
-        'PASSWORD': '2003',
+        'USER': 'nico',
+        'PASSWORD': '1234',
         'HOST': '127.0.0.1',
         'DATABASE_PORT': '5432',
     }}
@@ -119,6 +120,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)

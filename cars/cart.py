@@ -11,9 +11,6 @@ class ShoppingCart:
             cart = self.session["cart"] = {}
         self.cart = cart
 
-
-    
-
     def add(self, product, quantity=1):
             """
             Add a product to the cart or update its quantity.
@@ -28,24 +25,24 @@ class ShoppingCart:
                     "brand": product.brand,
                     "model": product.model,
                     "stock": product.stock,
-                    "quantity": quantity,  # Set the initial quantity to the provided quantity
+                    "quantity": quantity,  
                     "age": product.age,
-                    "price": str(product.price * quantity),  # Multiply the price by the quantity
+                    "original_price": str(product.price), 
+                    "price": str(product.price * quantity), 
                     "image": product.image.url,
                 }
             else:
                 for key, value in self.cart.items():
                     if key == product_id:
-                        if value["quantity"] + quantity > product.stock:
-                            return "Estás superando el stock disponible"
-                        value["quantity"] = value["quantity"] + quantity
-                        value["price"] = int(value["price"]) + product.price * quantity  # Multiply the price by the quantity
+                        if value["quantity"] + 1 > product.stock:
+                            return  
+
+                        value["quantity"] = value["quantity"] + 1
+                        value["price"] = int(value["price"]) + product.price
                         break
 
             self.save()
 
-
-        
     def save(self):
         self.session["cart"] = self.cart
         self.session.modified = True
@@ -56,7 +53,6 @@ class ShoppingCart:
         if product.id in self.cart:
             del self.cart[product.id]
             self.save()
-
 
     def decrement(self, product):
         product_id = str(product.id)
@@ -70,14 +66,6 @@ class ShoppingCart:
         else:
             print("El producto no existe en el carrito")
 
-
     def clear(self):
-        for key, value in self.cart.items():
-            product = Cars.objects.get(id=key)
-            if product.stock >= value["quantity"]:
-                product.stock -= value["quantity"]
-                product.save()
-            else:
-                return "No hay suficiente stock para completar la compra"
         self.session["cart"] = {}
         self.session.modified = True

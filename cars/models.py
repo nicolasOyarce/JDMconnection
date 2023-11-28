@@ -2,6 +2,8 @@ from typing import Any
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import F, Sum, FloatField
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 
 # Models
 
@@ -18,6 +20,7 @@ class Cars(models.Model):
     price       = models.IntegerField()
     register    = models.DateTimeField(auto_now_add=True)
     image       = models.ImageField(upload_to="cars_img", null=True)
+    in_stock    = models.BooleanField(default=True)
 
     def __str__(self):
         return self.brand + ' ' + self.model + ' ' + self.age
@@ -28,41 +31,29 @@ class Cars(models.Model):
         ordering = ['id']
 
 
-class Sale(models.Model):
 
-    folio     = models.CharField(max_length=6, primary_key=True, auto_created=True)
-    user      = models.ForeignKey(User, on_delete=models.CASCADE)
-    register  = models.DateTimeField(auto_now_add=True)
+@receiver(pre_save, sender=Cars)
+def update_in_stock(sender, instance, **kwargs):
+    instance.in_stock = instance.stock > 0
+
+class Sale(models.Model):
+    user        = models.ForeignKey(User, on_delete=models.CASCADE)
+    date        = models.DateTimeField(auto_now_add=True)
+    total_price = models.IntegerField(default=0)
 
 
     def __str__(self):
-        return self.folio
-    
-    @property
-    def total(self):
-        return self.salesdatail_set.aggregate(
-            
-            total = Sum(F("price")*F("quantity"), output_field = FloatField())
-        )["total"]
-    
-    class Meta:
-
-        db_table = 'sale'
-        ordering = ['folio']
+        return str(self.user) + " / numero de compra: " + str(self.id)
 
 
 class SalesDetail(models.Model):
-
-    folio      = models.ForeignKey(Sale, on_delete=models.CASCADE)
-    id_product = models.ForeignKey(Cars, on_delete=models.CASCADE)
-    user       = models.ForeignKey(User, on_delete=models.CASCADE)
-    quantity   = models.IntegerField(default=1, null=False)
-    register  = models.DateTimeField(auto_now_add=True)
-
-    def __init__(self):
-        return self.user + ' ' + self.quantity
+    sale     = models.ForeignKey(Sale, on_delete=models.CASCADE)
+    product  = models.ForeignKey(Cars, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    price    = models.IntegerField(default=0)
     
-    class Meta:
-
-        db_table = 'saledetail'
-        ordering = ['id']
+    def __str__(self):
+        return str(self.sale) + " - " + str(self.product)
+    
+    def total_price(self):
+        return self.product.price * self.quantity
