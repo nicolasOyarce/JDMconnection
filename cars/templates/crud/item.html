@@ -16,18 +16,29 @@
                 <div style="margin: 10px 0 30px 0;">
                     <h3>${{car.price}}</h3>
                 </div>
-                <p class="lead">{{car.description}}
-                </p><br>
-                <div class="d-flex">
-                  <input id="form1" min="0" name="quantity" value="1" type="number" class="text-center me-3" />
-                    <button class="btn btn-outline-dark flex-shrink-0" type="submit">
-                        <a href="{% url 'shopping_cart_add' car.id %}" class="bi-cart-fill me-1" style="text-decoration: none;">Agregar al carrito</a>
-                    </button>
-                </div>
+                <p class="lead">{{car.description}}</p><br>
+                <form action="{% url 'shopping_cart_add' car.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="d-flex">
+                        <input 
+                            id="form1" 
+                            min="1" 
+                            max="{{ car.stock }}"  
+                            name="quantity" 
+                            value="1" 
+                            type="number" 
+                            class="text-center me-3" 
+                        />
+                        <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                            <i class="bi-cart-fill me-1"></i>Agregar al carrito
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </section>
+
 
 <!-- SECONDARY PRODUCT -->
 <section class="py-5 bg-light">

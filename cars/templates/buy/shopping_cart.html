@@ -72,7 +72,7 @@
         {% if user.is_authenticated and request.session.cart.items %}
               <div class="card">
                 <div class="card-">
-                  <a href="{% url 'shopping_cart_clear' %}" class="btn btn-warning btn-block btn-lg">Proceder al Pago</a>
+                  <a href="{% url 'process_sale' %}" class="btn btn-warning btn-block btn-lg">Proceder al Pago</a>
                 </div>
               </div>
         {% endif %}
