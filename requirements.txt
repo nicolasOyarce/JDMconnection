@@ -1,8 +1,8 @@
 asgiref==3.7.2
 Django==4.2.7
+django-humanize==0.1.2
 django-widget-tweaks==1.5.0
+humanize==4.8.0
 Pillow==10.1.0
-psycopg2==2.9.9
-psycopg2-binary==2.9.9
 sqlparse==0.4.4
 typing_extensions==4.8.0
